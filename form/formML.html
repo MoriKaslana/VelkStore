@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="shortcut icon" href="Gambar/mlbb.png" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" 
+    href="../css/Form/ML.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation ML</title>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <img src="../Gambar/Logo Velkhana Store.png" width="120px" />
+      </div>
+      <div class="velkhana">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+      </div>
+      <nav class="nav-bar">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="aboutus.html">About Us</a></li>
+          <li><a href="#"  class="active">Product</a></li>
+          <li><a href="#contact">Contact Us</a></li>
+        </ul>
+      </nav>
+    </header>
+    <script>
+      velkhana = document.querySelector(".velkhana");
+      velkhana.onclick = function () {
+        navBar = document.querySelector(".nav-bar");
+        navBar.classList.toggle("active");
+      };
+    </script>
+
+    <div class="container">
+      <div class="game-description">
+        <div class="product-detail-container">
+          <div class="product-detail-top">
+            <div class="top-text">
+              <span></span>
+              <div class="game-title">Mobile Legends: Bang Bang</div>
+              <img
+                src="../Gambar/mlbb.png"
+                alt="mlbanner"
+                width="150px"
+                style="border-radius: 20px"
+              />
+              <div
+                id="product-description"
+                class="product-game-description mt-2"
+              >
+                <br />
+                <p>
+                  Top up MLBB/Mobile Legends: Bang Bang is now even easier with
+                  Velkhana Store! You can use it to have a Starlight Member,
+                  Twilight Pass, buy your favorite favorite skin. Just enter
+                  your ID, choose a nominal value and make a payment.
+                </p>
+                <p>
+                  Velkhana Store also provides a wide selection of payment
+                  methods for MLBB top ups which makes the process of buying
+                  MLBB Diamonds easy. You can easily use your E-wallet or credit
+                  balance to complete the transaction process. Top up MLBB
+                  Diamonds can also be done without registration, credit card
+                  and without having to log in.
+                </p>
+                <br />
+                <p><strong>About Mobile Legends: Bang Bang</strong></p>
+                <br />
+                <p>
+                  Released in 2016, Mobile Legends: Bang Bang is a Mobile
+                  Multiplayer Online Battle Arena developed by Moonton. This
+                  game is very popular, especially in Southeast Asia and was one
+                  of the selected games for the first e-sport competition at the
+                  ASEAN Games Philippines, 2019
+                </p>
+                <p>&nbsp;</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-container">
+        <form onsubmit="return validateForm()">
+          <table cellpadding="7" align-items="center">
+            <tr>
+              <td><label for="name">Username</label></td>
+              <td>:</td>
+              <td>
+                <input type="text" id="name" name="name" />
+              </td>
+            </tr>
+            <tr>
+              <td><label for="accid">Account ID</label></td>
+              <td>:</td>
+              <td>
+                <input type="text" id="accid" name="accid" />
+              </td>
+            </tr>
+            <tr>
+              <td><label for="serverid">Server ID</label></td>
+              <td>:</td>
+              <td>
+                <input type="text" id="serverid" name="serverid" />
+              </td>
+            </tr>
+            <tr>
+              <td><label for="email">Email</label></td>
+              <td>:</td>
+              <td>
+                <input type="email" id="email" name="email" />
+              </td>
+            </tr>
+            <tr>
+              <td><label for="jumlah">Select Quantity</label></td>
+              <td>:</td>
+              <td>
+                <select name="jumlah" id="diamonds">
+                  <option value="5">5 Diamonds + 0 Bonus</option>
+                  <option value="11">11 Diamonds + 1 Bonus</option>
+                  <option value="17">17 Diamonds + 2 Bonus</option>
+                  <option value="25">25 Diamonds + 3 Bonus</option>
+                  <option value="33">33 Diamonds + 3 Bonus</option>
+                  <option value="154">154 Diamonds + 20 Bonus</option>
+                  <option value="256">256 Diamonds + 40 Bonus</option>
+                  <option value="333">333 Diamonds + 37 Bonus</option>
+                </select>
+                
+                <div id="price"></div>
+                
+                <script>
+                  const selectElement = document.getElementById('diamonds');
+                  const priceDisplay = document.getElementById('price');
+                
+                  selectElement.addEventListener('change', function() {
+                    const selectedValue = selectElement.value;
+                    const prices = {
+                      5: 'Price: $10',
+                      11: 'Price: $20',
+                      17: 'Price: $30',
+                      25: 'Price: $40',
+                      33: 'Price: $50',
+                      154: 'Price: $100',
+                      256: 'Price: $200',
+                      333: 'Price: $300'
+                    };
+                
+                    priceDisplay.textContent = prices[selectedValue];
+                  });
+                </script>
+                
+              </td>
+            </tr>
+            <tr>
+              <td><label for="paymethod">Payment Method</label></td>
+              <td>:</td>
+              <td>
+                <select name="paymethod" id="paymethod">
+                  <option value="">Select Method</option>
+                  <option value="e-wallet">E-Wallet</option>
+                  <option value="token">Token</option>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td><label for="platform">Platform</label></td>
+              <td>:</td>
+              <td>
+                <select name="platform" id="platform">
+                  <option value="">Select Platform</option>
+                  <optgroup label="Token">
+                    <option value="Telkomsel">Telkomsel</option>
+                    <option value="Indosat">Indosat</option>
+                  </optgroup>
+                  <optgroup label="E-Wallet">
+                    <option value="qris">Q-RIS</option>
+                    <option value="dana">DANA</option>
+                    <option value="gopay">GO-PAY</option>
+                  </optgroup>
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td></td>
+              <td>
+                <input type="submit" value="Submit" />
+                <input type="reset" value="Clear" />
+              </td>
+            </tr>
+          </table>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      function validateForm() {
+        var name = document.forms[0]["name"].value;
+        var accid = document.forms[0]["accid"].value;
+        var serverid = document.forms[0]["serverid"].value;
+        var email = document.forms[0]["email"].value;
+        var jumlah = document.forms[0]["jumlah"].value;
+        var paymethod = document.forms[0]["paymethod"].value;
+        var platform = document.forms[0]["platform"].value;
+
+        if (name === "") {
+          alert("Username must be filled");
+          return false;
+        }
+        if (accid === "") {
+          alert("Account ID must be filled");
+          return false;
+        }
+        if (serverid === "") {
+          alert("Server ID must be filled");
+          return false;
+        }
+        if (email === "") {
+          alert("Email must be filled");
+          return false;
+        }
+        if (jumlah === "") {
+          alert("Quantity must be selected");
+          return false;
+        }
+        if (paymethod === "") {
+          alert("Payment Method must be selected");
+          return false;
+        }
+        if (platform === "") {
+          alert("Platform must be selected");
+          return false;
+        }
+
+        alert("Thanks For Ordering");
+        return true;
+      }
+    </script>
+
+        <!--footer-->
+    <div id="contact">
+    <footer class="footer">
+      <div class="footer-left">
+        <h3>Payment Method</h3>
+        <div class="online-payment">
+          <img src="../Gambar/dana.png" alt="" />
+          <img src="../Gambar/gopay.png" alt="" />
+          <img src="../Gambar/telkomsel.webp" alt="" />
+          <img src="../Gambar/trii.jpeg" alt="" />
+        </div>
+        <br />
+        <a href="#" class="syarat">Syarat & Ketentuan</a>
+        <a href="#" class="kebijakan">Kebijakan Privasi</a>
+        <p class="hakcipta">&copy; Hak Cipta Velkhana Payments</p>
+        <p class="footer-copyright">2023 Velkhana Store</p>
+      </div>
+
+      <div class="footer-center">
+        <div>
+          <i class="fa fa-map-marker"></i>
+          <p><span>Indonesia</span> Depok, Jawa Barat</p>
+        </div>
+        <div>
+          <i class="fa fa-phone"></i>
+          <p>+62 823-3406-4668</p>
+        </div>
+        <div>
+          <i class="fa fa-envelope"></i>
+          <p><a href="#">velkhanastore@gmail.com</a></p>
+        </div>
+      </div>
+
+      <div class="footer-right">
+        <p class="footer-about">
+          <span>About</span>
+          Velkhana Store melayani jasa pembelian top up berbagai game. velkhana
+          store buka dari pukul 08.00 sampai pukul 11.00. proses akan diproses
+          setelah pembayaran berlangsung dengan method payment yang ada.
+          velkhana store adalah top up game termurah, aman dan terpecaya.
+        </p>
+      </div>
+    </div>
+    </footer>
+  </body>
+</html>
