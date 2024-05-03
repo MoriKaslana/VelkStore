@@ -249,6 +249,7 @@
             var email = document.forms[0]["email"].value;
             var jumlah = document.forms[0]["jumlah"].value;
             var platform = document.forms[0]["platform"].value;
+            var price = document.getElementById('price').textContent;
 
             if (accid === "") {
                 alert("Account ID must be filled");
@@ -269,7 +270,7 @@
 
             if (platform === "qris") {
                 // Pass the selected price as a query parameter in the URL
-                window.location.href = "QRPayment.html?price=" + jumlah;
+                window.location.href = "QRPayment.html?price=" + price;
                 // return false; // Prevent form submission
             }
 

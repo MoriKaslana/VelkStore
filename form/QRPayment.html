@@ -13,7 +13,7 @@
     <div class="container">
         <div id="imgBox">
             <div style="display: flex; justify-content: center">
-                <h2>Selected Price: <span id="selected-price"></span></h2>
+                <h2><span id="selected-price"></span></h2>
             </div>
             <img src="" id="qrImage">
         </div>
@@ -37,7 +37,7 @@
             console.log("Retrieved Price:", price);
 
             // Display the price in an element with id "selected-price"
-            document.getElementById('selected-price').textContent = price + "$"; // Use lowercase "price"
+            document.getElementById('selected-price').textContent = price; // Use lowercase "price"
         };
 
 
