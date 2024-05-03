@@ -8,10 +8,13 @@
 </head>
 
 <body>
-    <p>Selected Price: <span id="selected-price"></span></p>
+
 
     <div class="container">
         <div id="imgBox">
+            <div style="display: flex; justify-content: center">
+                <h2>Selected Price: <span id="selected-price"></span></h2>
+            </div>
             <img src="" id="qrImage">
         </div>
         <button onclick="generateQR()">Generate QR Code</button>
@@ -25,17 +28,17 @@
             qrImage.src = `https://api.qrserver.com/v1/create-qr-code/?size=${qrSize}x${qrSize}&data=${qrData}`;
         }
 
-        window.onload = function() {
-    // Get the price parameter from the URL
-    var urlParams = new URLSearchParams(window.location.search);
-    var price = urlParams.get('price');
-    
-    // Log the retrieved price to the console for debugging
-    console.log("Retrieved Price:", price);
-    
-    // Display the price in an element with id "selected-price"
-    document.getElementById('selected-price').textContent = price; // Use lowercase "price"
-};
+        window.onload = function () {
+            // Get the price parameter from the URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var price = urlParams.get('price');
+
+            // Log the retrieved price to the console for debugging
+            console.log("Retrieved Price:", price);
+
+            // Display the price in an element with id "selected-price"
+            document.getElementById('selected-price').textContent = price + "$"; // Use lowercase "price"
+        };
 
 
 
