@@ -3,22 +3,17 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="shortcut icon" href="Gambar/mlbb.png" type="image/x-icon" />
-    <link rel="stylesheet" type="text/css" href="../css/Form/AK.css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="shortcut icon" href="../Gambar/mlbb.png" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="../css/Form/AK.CSS">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form Arknights</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <style>
         .scrollable {
             max-height: 300px;
             overflow-y: auto;
         }
-
-
-
 
         #scrollbar2::-webkit-scrollbar {
             width: 12px;
@@ -75,7 +70,7 @@
         <nav class="nav-bar" style="z-index: 1000;">
             <ul>
                 <li><a href="../index.html">Home</a></li>
-                <li><a href="aboutus.html">About Us</a></li>
+                <li><a href="../aboutus.html">About Us</a></li>
                 <li><a href="#" class="active">Product</a></li>
                 <li><a href="#contact">Contact Us</a></li>
             </ul>
@@ -89,37 +84,24 @@
         </script>
     </header>
 
-
     <div class="container">
         <div class="row">
             <div class="col-md-8">
                 <div class="scrollable scrollbar" id="scrollbar2">
                     <div style="display: flex; align-items: center; gap: 10px">
                         <h4>Arknights</h4>
-                        <img src="../Gambar/Arknights_icon.png" alt="mlbanner" width="50px"
-                            style="border-radius: 20px" />
+                        <img src="../Gambar/Arknights_icon.png" alt="mlbanner" width="50px" style="border-radius: 20px" />
                     </div>
-                    <h4>Top up Arknights is now even easier with
-                        Velkhana Store! You can use it to have a Monthly Card ,
-                        Monthly Headhunting Pack, and Originium Prime, gacha on your dearest waifu and husbandos. Just enter
-                        your UID, choose a nominal value and make a payment.<br><br>
+                    <h4>Top up Arknights is now even easier with Velkhana Store! You can use it to have a Monthly Card, Monthly Headhunting Pack, and Originium Prime, gacha on your dearest waifu and husbandos. Just enter your UID, choose a nominal value and make a payment.<br><br>
 
-                        Velkhana Store also provides a wide selection of payment
-                                methods for Arknights top ups which makes the process of buying
-                                Arknights items simpler. You can easily use your E-wallet or credit
-                                balance to complete the transaction process. Top up Arknights
-                                can also be done without registration, credit card
-                                and without having to log in.<br><br>
+                        Velkhana Store also provides a wide selection of payment methods for Arknights top ups which makes the process of buying Arknights items simpler. You can easily use your E-wallet or credit balance to complete the transaction process. Top up Arknights can also be done without registration, credit card and without having to log in.<br><br>
 
-                        <strong>About Arknights</strong> <br>
-                        Released in 2019, Arknights is a free-to-play tactical RPG/tower defense mobile game developed by Chinese developer Hypergryph.
-                                The core gameplay is that of a tower defense game, with a number of characters ("operators") as towers. 
-                                Melee operators can be placed on ground tiles and ranged operators on elevated tiles. </h4>
-
+                        <strong>About Arknights</strong> <br> Released in 2019, Arknights is a free-to-play tactical RPG/tower defense mobile game developed by Chinese developer Hypergryph. The core gameplay is that of a tower defense game, with a number of characters ("operators") as towers. Melee operators can be placed on ground tiles and ranged operators on elevated tiles.
+                    </h4>
                 </div>
             </div>
             <div class="col-md-4">
-                <form onsubmit="validateForm()" id="myForm">
+                <form id="myForm">
                     <h4>Top Up</h4>
                     <div class="form-group">
                         <input type="text" id="accid" name="accid" class="form-control" placeholder="ID">
@@ -128,7 +110,13 @@
                         <input type="email" id="email" name="email" class="form-control" placeholder="Email">
                     </div>
                     <div class="form-group">
-                        <select name="jumlah" id="diamonds">
+                        <input type="text" id="phone" name="phone" class="form-control" placeholder="Phone Number">
+                    </div>
+                    <div class="form-group">
+                        <input type="file" id="image" name="image" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <select name="jumlah" id="diamonds" class="form-control">
                             <option value="5">Monthly Card</option>
                             <option value="11">Monthly Headhunting Pack</option>
                             <option value="17">1 Originium</option>
@@ -140,22 +128,24 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <select name="platform" id="platform">
+                        <select name="platform" id="platform" class="form-control">
                             <option value="">Select Payment</option>
                             <optgroup label="Token">
                                 <option value="Telkomsel">Telkomsel</option>
                                 <option value="Indosat">Indosat</option>
                             </optgroup>
                             <optgroup label="E-Wallet">
-                                <option value="qris">Q-RIS</option>
+                                <option value="qris">QRIS</option>
                                 <option value="dana">DANA</option>
                                 <option value="gopay">GO-PAY</option>
                             </optgroup>
                         </select>
                     </div>
-                    <div id="price"></div>
+                    <div id="price" style="margin-bottom: 20px;"></div>
+                    <div id="payment-phone" style="margin-top: 20px; display: none;"></div>
+                    <div><h1></h1></div>
+                    <div><h1></h1></div>
                     <div class="form-group">
-
                         <button type="submit" value="submit" class="btn btn-primary">Submit</button>
                         <button type="reset" value="clear" class="btn btn-secondary">Clear</button>
                     </div>
@@ -200,109 +190,160 @@
             <div class="footer-right">
                 <p class="footer-about">
                     <span>About</span>
-                    Velkhana Store melayani jasa pembelian top up berbagai game. velkhana
-                    store buka dari pukul 08.00 sampai pukul 11.00. proses akan diproses
-                    setelah pembayaran berlangsung dengan method payment yang ada.
-                    velkhana store adalah top up game termurah, aman dan terpecaya.
+                    Velkhana Store melayani jasa pembelian item ingame dengan berbagai metode pembayaran E-wallet serta
+                    token prabayar.
                 </p>
+                <div class="footer-social">
+                    <a href="https://www.facebook.com/velkhanastore"><i class="fa fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/velkhanastore"><i class="fa fa-instagram"></i></a>
+                </div>
             </div>
         </footer>
     </div>
 
-    <script>
-        $(document).ready(function () {
+    <!-- Import Firebase libraries -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+        import { getDatabase, set, ref as dbRef } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBNqhwnVZW4cmepCFUjlXROClwhrb0GO04",
+            authDomain: "velkhana-store.firebaseapp.com",
+            databaseURL: "https://velkhana-store-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "velkhana-store",
+            storageBucket: "velkhana-store.appspot.com",
+            messagingSenderId: "813151184155",
+            appId: "1:813151184155:web:4a7f0d933d16efe3a89fbe",
+            measurementId: "G-D25CS9PGFW"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const storage = getStorage(app);
+        const realtimeDb = getDatabase(app);
+
+        // Document ready function
+        document.addEventListener('DOMContentLoaded', function () {
+            // Validate form data
+            function validateForm(data) {
+                let formIsValid = true;
+
+                if (data.accid === "") {
+                    alert("Account ID must be filled");
+                    formIsValid = false;
+                }
+                if (data.email === "") {
+                    alert("Email must be filled");
+                    formIsValid = false;
+                }
+                if (data.phone === "") {
+                    alert("Phone number must be filled");
+                    formIsValid = false;
+                }
+                if (!data.image) {
+                    alert("Image must be uploaded");
+                    formIsValid = false;
+                }
+                if (data.jumlah === "") {
+                    alert("Quantity must be selected");
+                    formIsValid = false;
+                }
+                if (data.platform === "") {
+                    alert("Platform must be selected");
+                    formIsValid = false;
+                }
+
+                return formIsValid;
+            }
+
             // Handle form submission
-            $('#myForm').submit(function (event) {
-                event.preventDefault(); // Prevent the form from submitting normally
+            const form = document.getElementById('myForm');
+            form.addEventListener('submit', async (event) => {
+                event.preventDefault();
 
                 // Get form data
-                var formData = {
-                    accid: $('input[name=accid]').val(),
-                    email: $('input[name=email]').val(),
-                    jumlah: $('select[name=jumlah]').val(),
-                    platform: $('select[name=platform]').val()
+                const formData = {
+                    accid: form.accid.value,
+                    email: form.email.value,
+                    phone: form.phone.value,
+                    jumlah: form.jumlah.value,
+                    platform: form.platform.value,
+                    image: form.image.files[0]
                 };
 
-                // Get existing data from local storage
-                var existingData = localStorage.getItem('history');
-                existingData = existingData ? JSON.parse(existingData) : [];
+                if (validateForm(formData)) {
+                    try {
+                        // Upload image to Firebase Storage
+                        const storageRef = ref(storage, 'images/' + formData.image.name);
+                        const snapshot = await uploadBytes(storageRef, formData.image);
+                        const downloadURL = await getDownloadURL(snapshot.ref);
 
-                // Append the new form data to existing data
-                existingData.push(formData);
+                        // Add image URL to formData
+                        formData.imageURL = downloadURL;
 
-                // Store the updated data in local storage
-                localStorage.setItem('history', JSON.stringify(existingData));
+                        // Store formData in Realtime Database
+                        await set(dbRef(realtimeDb, 'akPayment/' + formData.value), {
+                            accid: formData.accid,
+                            email: formData.email,
+                            phone: formData.phone,
+                            jumlah: formData.jumlah,
+                            platform: formData.platform,
+                            imageURL: formData.imageURL
+                        });
 
-                console.log('Form data stored in local storage:', formData);
-                // You can add any additional actions here after storing the form data
+                        console.log('Form data stored in Realtime Database:', formData);
+                        alert('Data has been successfully submitted and stored in Realtime Database.');
+
+                        // Clear the form
+                        form.reset();
+                    } catch (error) {
+                        console.error('Error storing data in Firestore or Realtime Database:', error);
+                        alert('Failed to store data.');
+                    }
+                }
+            });
+
+            // Handle platform change
+            const platformSelect = document.getElementById('platform');
+            platformSelect.addEventListener('change', function () {
+                const platform = this.value;
+                const phoneNumbers = {
+                    'Telkomsel': '0811-1234-5678',
+                    'Indosat': '0815-1234-5678',
+                    'dana': '0857-1234-5678',
+                    'gopay': '0812-1234-5678'
+                };
+                const phoneNumber = phoneNumbers[platform];
+                if (phoneNumber) {
+                    document.getElementById('payment-phone').textContent = 'Please transfer to: ' + phoneNumber;
+                    document.getElementById('payment-phone').style.display = "block";
+                } else {
+                    document.getElementById('payment-phone').style.display = "none";
+                }
+            });
+
+            // Update price display based on selection
+            const diamondsSelect = document.getElementById('diamonds');
+            const priceDisplay = document.getElementById('price');
+            diamondsSelect.addEventListener('change', function () {
+                const prices = {
+                    5: 'Price: Rp 70.671',
+                    11: 'Price: Rp 381.620',
+                    17: 'Price: Rp 14.050',
+                    25: 'Price: Rp 70.250',
+                    33: 'Price: Rp 210.750',
+                    154: 'Price: Rp 421.500',
+                    256: 'Price: Rp 702.500',
+                    333: 'Price: Rp 1.405.000'
+                };
+                priceDisplay.textContent = prices[this.value];
             });
         });
     </script>
 
-    <script>
-        function validateForm() {
-    var accid = document.forms[0]["accid"].value;
-    var email = document.forms[0]["email"].value;
-    var jumlah = document.forms[0]["jumlah"].value;
-    var platform = document.forms[0]["platform"].value;
-    var price = document.getElementById('price').textContent;
-
-    var formIsValid = true; // Variabel penanda validasi formulir
-
-    if (accid === "") {
-        alert("Account ID must be filled");
-        formIsValid = false; // Form tidak valid
-    }
-    if (email === "") {
-        alert("Email must be filled");
-        formIsValid = false; // Form tidak valid
-    }
-    if (jumlah === "") {
-        alert("Quantity must be selected");
-        formIsValid = false; // Form tidak valid
-    }
-    if (platform === "") {
-        alert("Platform must be selected");
-        formIsValid = false; // Form tidak valid
-    }
-
-    if (formIsValid) { // Jika formulir valid
-        if (platform === "qris") {
-            // Pass the selected price as a query parameter in the URL
-            window.location.href = "QRPayment.html?price=" + price;
-            return false; // Prevent form submission
-        }
-        alert("Thanks For Ordering");
-        return true; // Izinkan pengiriman formulir
-    } else {
-        return false; // Form tidak valid, jangan kirim formulir
-    }
-}
-    </script>
-
-    <script>
-        const selectElement = document.getElementById('diamonds');
-        const priceDisplay = document.getElementById('price');
-
-        selectElement.addEventListener('change', function () {
-            const selectedValue = selectElement.value;
-            const prices = {
-                5: 'Price: Rp 70.671',
-                11: 'Price: Rp 381.620',
-                17: 'Price: Rp 14.050',
-                25: 'Price: Rp 70.250',
-                33: 'Price: Rp 210.750',
-                154: 'Price: Rp 421.500',
-                256: 'Price: Rp 702.500',
-                333: 'Price: Rp 1.405.000'
-            };
-
-            priceDisplay.textContent = prices[selectedValue];
-        });
-    </script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
 
 </html>

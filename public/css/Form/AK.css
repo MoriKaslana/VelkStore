@@ -16,7 +16,7 @@
 }
 
 body {
-  background-image: url(/Gambar/ak.jpg); /* Replace 'your-image-url.jpg' with the URL or path to your image */
+  background-image: url(/public/Gambar/ak.jpg); /* Replace 'your-image-url.jpg' with the URL or path to your image */
   background-size: cover; /* Ensures the image covers the entire background */
   background-repeat: no-repeat; /* Prevents the image from repeating */
   max-width: 100%;
@@ -234,6 +234,10 @@ footer {
   font-weight: normal;
   margin: 0;
   padding-top: 10%;
+}
+
+h1{
+  color: #fff;
 }
 
 .footer .footer-center {
