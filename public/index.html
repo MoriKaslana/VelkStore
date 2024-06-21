@@ -191,6 +191,17 @@
 
 
     <!--footer-->
+    <div class="comment-section">
+      <h2>Leave a Comment</h2>
+      <form action="process_comment.php" method="post">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        <label for="comment">Comment:</label><br>
+        <textarea id="comment" name="comment" rows="5" cols="33"></textarea><br><br>
+        <input type="submit" value="Submit Comment">
+      </form>
+    </div>
+    
     <div id="contact">
     <footer class="footer">
       <div class="footer-left">
@@ -241,6 +252,6 @@
         </div>
       </div>
     </div>
-    </footer>
+    </footer>    
   </body>
 </html>
