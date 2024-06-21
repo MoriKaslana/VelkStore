@@ -9,6 +9,8 @@
     <script type="module" src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
     <!-- Firebase Auth -->
     <script type="module" src="https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js"></script>
+    <!-- Firebase Database -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js"></script>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
@@ -34,6 +36,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-auth.js";
+        import { getDatabase, ref, set, push } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -50,12 +53,13 @@
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const database = getDatabase(app);
 
         // Email validation regex
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
         // Handle login form submission
-        document.getElementById('login-form').addEventListener('submit', (e) => {
+        document.getElementById('login-form').addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const email = document.getElementById('email').value.trim();
@@ -76,18 +80,31 @@
                 return;
             }
 
-            // Authenticate with Firebase
-            signInWithEmailAndPassword(auth, email, password)
-                .then((userCredential) => {
-                    // Signed in
-                    const user = userCredential.user;
-                    alert('Login successful!');
-                    window.location.href = 'admin/adminHome.html';  // Redirect to adminHome.html
-                })
-                .catch((error) => {
-                    const errorMessage = error.message;
-                    errorMessageDiv.textContent = errorMessage;
+            try {
+                // Authenticate with Firebase
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+                alert('Login successful!');
+
+                // Convert UID to integer (for demonstration, we'll hash it to an integer value)
+                const userId = user.uid.split('').reduce((sum, char) => sum + char.charCodeAt(0), 0);
+
+                // Log user activity
+                const logRef = push(ref(database, 'userLogs/'));
+                await set(logRef, {
+                    key: logRef.key,
+                    userId: userId,
+                    email: user.email,
+                    action: 'login',
+                    details: `User ${user.email} logged in.`,
+                    timestamp: new Date().toISOString()  // Save timestamp in ISO format
                 });
+
+                window.location.href = 'admin/adminHome.html';  // Redirect to adminHome.html
+            } catch (error) {
+                const errorMessage = error.message;
+                errorMessageDiv.textContent = errorMessage;
+            }
         });
     </script>
 </body>
