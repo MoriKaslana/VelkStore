@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velkhana Store | View Comments</title>
+    <link rel="stylesheet" type="text/css" href="../css/style.css" />
+    <link rel="shortcut icon" href="../Gambar/img01.png" type="image/x-icon" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .main {
+            padding: 20px;
+        }
+        .comment-section {
+            background: #fff;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .comment-section h2 {
+            margin-top: 0;
+        }
+        #comments-display {
+            margin-top: 20px;
+        }
+        .comment {
+            background: #fff;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 0 5px rgba(0,0,0,0.1);
+        }
+        .comment p {
+            margin: 5px 0;
+        }
+
+    </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <img src="../Gambar/Logo Velkhana Store.png" width="120px" />
+    </div>
+    <div class="velkhana">
+      <div class="line"></div>
+      <div class="line"></div>
+      <div class="line"></div>
+    </div>
+    <nav class="nav-bar">
+      <ul>
+        <li><a href="adminHome.html" class="active">Home</a></li>
+        <li><a href="adminShowComms.html">Comments</a></li>
+        <li><a href="adminLog.html">Logs</a></li>
+        <li><a href="#" onclick="logout()">Log Out</a></li>
+      </ul>
+    </nav>
+  </header>
+  <script>
+    const velkhana = document.querySelector(".velkhana");
+    velkhana.onclick = function () {
+      const navBar = document.querySelector(".nav-bar");
+      navBar.classList.toggle("active");
+    };
+  </script>
+
+    <div class="main">
+        <div id="comments-display">
+            <h2>Comments</h2>
+            <div>.</div>
+            <div id="comments-list"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.17.1/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyBNqhwnVZW4cmepCFUjlXROClwhrb0GO04",
+            authDomain: "velkhana-store.firebaseapp.com",
+            databaseURL: "https://velkhana-store-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "velkhana-store",
+            storageBucket: "velkhana-store.appspot.com",
+            messagingSenderId: "813151184155",
+            appId: "1:813151184155:web:4a7f0d933d16efe3a89fbe",
+            measurementId: "G-D25CS9PGFW"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        function displayComments() {
+            const commentsRef = ref(database, 'comments');
+            onValue(commentsRef, (snapshot) => {
+                const commentsContainer = document.getElementById('comments-list');
+                commentsContainer.innerHTML = '';
+                const comments = snapshot.val();
+                for (let id in comments) {
+                    const commentData = comments[id];
+                    const commentElement = document.createElement('div');
+                    commentElement.classList.add('comment');
+                    commentElement.innerHTML = `
+                        <p><strong>${commentData.name}</strong></p>
+                        <p>${commentData.comment}</p>
+                        <p><em>${new Date(commentData.timestamp).toLocaleString()}</em></p>
+                    `;
+                    commentsContainer.appendChild(commentElement);
+                }
+            });
+        }
+
+        displayComments();
+    </script>
+</body>
+</html>
