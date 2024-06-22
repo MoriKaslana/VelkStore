@@ -1,0 +1,41 @@
+<style>
+#edit-log-form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin: 10px;
+}
+
+#log-details {
+  padding: 5px;
+  border: 1px solid #ccc;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+</style>
+
+
+<form id="edit-log-form">
+    <label for="log-details">Log Details:</label>
+    <input type="text" id="log-details" name="details" required>
+    <button type="submit">Update Log</button>
+  </form>
+
+  <script>
+    const form = document.getElementById('edit-log-form');
+
+form.addEventListener('submit', function(event) {
+  event.preventDefault();
+  const key = document.getElementById('log-details').dataset.key; // Assuming you set the key as data attribute on the input field
+  const newDetails = document.getElementById('log-details').value;
+  editLog(key, newDetails);
+});
+  </script>
