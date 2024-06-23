@@ -22,6 +22,7 @@
                     <th>Amount</th>
                     <th>Platform</th>
                     <th>Image</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -44,28 +45,12 @@
                     <form id="edit-form">
                         <input type="hidden" id="edit-id">
                         <div class="form-group">
-                            <label for="edit-accid">Account ID</label>
-                            <input type="text" class="form-control" id="edit-accid">
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-email">Email</label>
-                            <input type="email" class="form-control" id="edit-email">
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-phone">Phone</label>
-                            <input type="text" class="form-control" id="edit-phone">
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-jumlah">Amount</label>
-                            <input type="text" class="form-control" id="edit-jumlah">
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-platform">Platform</label>
-                            <input type="text" class="form-control" id="edit-platform">
-                        </div>
-                        <div class="form-group">
-                            <label for="edit-image">Image URL</label>
-                            <input type="text" class="form-control" id="edit-image">
+                            <label for="edit-status">Status</label>
+                            <select class="form-control" id="edit-status">
+                                <option value="Order Process">Order Process</option>
+                                <option value="Order Declined">Order Declined</option>
+                                <option value="Order Success">Order Success</option>
+                            </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Save changes</button>
                     </form>
@@ -101,28 +86,41 @@
         // Reference to the database
         const dbRefTopups = dbRef(realtimeDb, 'akPayment');
 
-        // Fetch and display data
-        const dataTableBody = document.getElementById('data-table-body');
+        // Fetch and display data by gameId
+        function fetchDataByGameId(gameId) {
+            onValue(dbRefTopups, (snapshot) => {
+                const data = snapshot.val();
+                const filteredData = [];
+                for (const id in data) {
+                    if (data[id].gameId === gameId) {
+                        filteredData.push({ id, ...data[id] });
+                    }
+                }
+                displayData(filteredData);
+            });
+        }
 
-        onValue(dbRefTopups, (snapshot) => {
+        // Display data in the table
+        function displayData(data) {
+            const dataTableBody = document.getElementById('data-table-body');
             dataTableBody.innerHTML = '';
-            const data = snapshot.val();
-            for (const id in data) {
+            data.forEach(item => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td>${data[id].accid}</td>
-                    <td>${data[id].email}</td>
-                    <td>${data[id].phone}</td>
-                    <td>${data[id].jumlah}</td>
-                    <td>${data[id].platform}</td>
-                    <td><img src="${data[id].imageURL}" width="50"></td>
+                    <td>${item.accid}</td>
+                    <td>${item.email}</td>
+                    <td>${item.phone}</td>
+                    <td>${item.jumlah}</td>
+                    <td>${item.platform}</td>
+                    <td><img src="${item.imageURL}" width="50"></td>
+                    <td>${item.status}</td>
                     <td>
-                        <button class="btn btn-info btn-edit" data-id="${id}">Edit</button>
-                        <button class="btn btn-danger btn-delete" data-id="${id}">Delete</button>
+                        <button class="btn btn-info btn-edit" data-id="${item.id}">Edit</button>
+                        <button class="btn btn-danger btn-delete" data-id="${item.id}">Delete</button>
                     </td>
                 `;
                 dataTableBody.appendChild(row);
-            }
+            });
 
             // Attach edit and delete event listeners
             document.querySelectorAll('.btn-edit').forEach(button => {
@@ -131,7 +129,7 @@
             document.querySelectorAll('.btn-delete').forEach(button => {
                 button.addEventListener('click', deleteData);
             });
-        });
+        }
 
         // Open edit modal and populate with data
         function openEditModal(event) {
@@ -140,14 +138,9 @@
             onValue(dataRef, (snapshot) => {
                 const data = snapshot.val();
                 document.getElementById('edit-id').value = id;
-                document.getElementById('edit-accid').value = data.accid;
-                document.getElementById('edit-email').value = data.email;
-                document.getElementById('edit-phone').value = data.phone;
-                document.getElementById('edit-jumlah').value = data.jumlah;
-                document.getElementById('edit-platform').value = data.platform;
-                document.getElementById('edit-image').value = data.imageURL;
+                document.getElementById('edit-status').value = data.status;
+                $('#editModal').modal('show');
             });
-            $('#editModal').modal('show');
         }
 
         // Handle edit form submission
@@ -155,12 +148,7 @@
             event.preventDefault();
             const id = document.getElementById('edit-id').value;
             const data = {
-                accid: document.getElementById('edit-accid').value,
-                email: document.getElementById('edit-email').value,
-                phone: document.getElementById('edit-phone').value,
-                jumlah: document.getElementById('edit-jumlah').value,
-                platform: document.getElementById('edit-platform').value,
-                imageURL: document.getElementById('edit-image').value
+                status: document.getElementById('edit-status').value
             };
             update(dbRef(realtimeDb, 'akPayment/' + id), data).then(() => {
                 $('#editModal').modal('hide');
@@ -179,6 +167,11 @@
                 console.error('Error deleting data:', error);
             });
         }
+
+        // Fetch and display data for gameId = 1 on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchDataByGameId(1);
+        });
     </script>
 
     <!-- Import Bootstrap JS -->
