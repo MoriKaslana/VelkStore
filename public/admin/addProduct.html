@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management</title>
+    <link rel="stylesheet" href="admcss/product.css">
+</head>
+<body>
+    <h1>Product Management</h1>
+
+    <form id="productForm">
+        <input type="hidden" id="productId" name="productId">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        <label for="category">Category:</label>
+        <select id="category" name="category" required>
+            <option value="MOBA">MOBA</option>
+            <option value="Open World">Open World</option>
+            <option value="Battle Royale">Battle Royale</option>
+            <option value="Strategy Base">Strategy Base</option>
+        </select><br><br>
+
+        <label for="description">Description:</label>
+        <textarea id="description" name="description" rows="4" required></textarea><br><br>
+
+        <label for="image">Game Image:</label>
+        <input type="file" id="image" name="image" required><br><br>
+
+        <button type="submit">Save Product</button>
+        <button type="button" class="cancel" id="cancelEdit">Cancel</button>
+    </form>
+
+    <h2>Products</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="productsList"></tbody>
+    </table>
+
+    <!-- Load Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+
+    <script>
+        // Your Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBDzegBgVkxUW_Uv7C8PEWIJYLnkhoZQQQ",
+            authDomain: "velkhana-store-a982e.firebaseapp.com",
+            databaseURL: "https://velkhana-store-a982e-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "velkhana-store-a982e",
+            storageBucket: "velkhana-store-a982e.appspot.com",
+            messagingSenderId: "54675619484",
+            appId: "1:54675619484:web:c46f3d05da8dcba7683759"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        const storage = firebase.storage();
+
+        const productForm = document.getElementById('productForm');
+        const productsList = document.getElementById('productsList');
+        const cancelEditBtn = document.getElementById('cancelEdit');
+        let currentProductId = '';
+
+        productForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            const name = document.getElementById('name').value;
+            const category = document.getElementById('category').value;
+            const description = document.getElementById('description').value;
+            const imageFile = document.getElementById('image').files[0];
+
+            if (!imageFile) return alert('Please select an image file.');
+
+            const imageRef = storage.ref(`Product/${imageFile.name}`);
+            imageRef.put(imageFile).then((snapshot) => {
+                snapshot.ref.getDownloadURL().then((downloadURL) => {
+                    const productData = {
+                        name: name,
+                        category: category,
+                        description: description,
+                        imageUrl: downloadURL,
+                    };
+
+                    if (currentProductId) {
+                        db.ref('products/' + currentProductId).set(productData);
+                    } else {
+                        db.ref('products').push(productData);
+                    }
+
+                    productForm.reset();
+                    currentProductId = '';
+                });
+            });
+        });
+
+        cancelEditBtn.addEventListener('click', () => {
+            productForm.reset();
+            currentProductId = '';
+        });
+
+        function fetchProducts() {
+            db.ref('products').on('value', (snapshot) => {
+                productsList.innerHTML = '';
+                snapshot.forEach((childSnapshot) => {
+                    const product = childSnapshot.val();
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><img src="${product.imageUrl}" alt="${product.name}" width="50"></td>
+                        <td>${product.name}</td>
+                        <td>${product.category}</td>
+                        <td>${product.description}</td>
+                        <td>
+                            <button onclick="editProduct('${childSnapshot.key}', '${product.name}', '${product.category}', '${product.description}', '${product.imageUrl}')">Edit</button>
+                            <button onclick="deleteProduct('${childSnapshot.key}')">Delete</button>
+                        </td>
+                    `;
+                    productsList.appendChild(tr);
+                });
+            });
+        }
+
+        function editProduct(id, name, category, description, imageUrl) {
+            document.getElementById('productId').value = id;
+            document.getElementById('name').value = name;
+            document.getElementById('category').value = category;
+            document.getElementById('description').value = description;
+            currentProductId = id;
+        }
+
+        function deleteProduct(id) {
+            db.ref('products/' + id).remove();
+        }
+
+        fetchProducts();
+    </script>
+</body>
+</html>

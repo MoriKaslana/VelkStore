@@ -210,17 +210,16 @@
     
         // Your web app's Firebase configuration
         const firebaseConfig = {
-            apiKey: "AIzaSyBNqhwnVZW4cmepCFUjlXROClwhrb0GO04",
-            authDomain: "velkhana-store.firebaseapp.com",
-            databaseURL: "https://velkhana-store-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "velkhana-store",
-            storageBucket: "velkhana-store.appspot.com",
-            messagingSenderId: "813151184155",
-            appId: "1:813151184155:web:4a7f0d933d16efe3a89fbe", 
-            measurementId: "G-D25CS9PGFW"
+            apiKey: "AIzaSyBDzegBgVkxUW_Uv7C8PEWIJYLnkhoZQQQ",
+            authDomain: "velkhana-store-a982e.firebaseapp.com",
+            databaseURL: "https://velkhana-store-a982e-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "velkhana-store-a982e",
+            storageBucket: "velkhana-store-a982e.appspot.com",
+            messagingSenderId: "54675619484",
+            appId: "1:54675619484:web:c46f3d05da8dcba7683759"
         };
     
-        // Initialize Firebase
+        // Initialize Firebase  
         const app = initializeApp(firebaseConfig);
         const storage = getStorage(app);
         const realtimeDb = getDatabase(app);
@@ -279,7 +278,7 @@
                 if (validateForm(formData)) {
                     try {
                         // Upload image to Firebase Storage
-                        const storageRef = ref(storage, 'images/' + formData.image.name);
+                        const storageRef = ref(storage, 'Bukti_Pembayaran/' + formData.image.name);
                         const snapshot = await uploadBytes(storageRef, formData.image);
                         const downloadURL = await getDownloadURL(snapshot.ref);
     
@@ -287,7 +286,7 @@
                         formData.imageURL = downloadURL;
     
                         // Generate a new unique reference for the form data
-                        const newRef = push(dbRef(realtimeDb, 'akPayment'));
+                        const newRef = push(dbRef(realtimeDb, 'Payment'));
     
                         // Store formData in Realtime Database
                         await set(newRef, {
