@@ -196,18 +196,20 @@
                 <div class="footer-social">
                     <a href="https://www.facebook.com/velkhanastore"><i class="fa fa-facebook"></i></a>
                     <a href="https://www.instagram.com/velkhanastore"><i class="fa fa-instagram"></i></a>
+                    <a href="#"><i class="fa fa-twitter"></i></a>
+                    <a href="#"><i class="fa fa-youtube"></i></a>
                 </div>
             </div>
         </footer>
     </div>
 
-    <!-- Import Firebase libraries -->
+    <!--firebase-->
     <script type="module">
         // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-        import { getDatabase, set, ref as dbRef, push } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-    
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-app.js";
+        import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-database.js";
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.9.3/firebase-storage.js";
+
         // Your web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyBDzegBgVkxUW_Uv7C8PEWIJYLnkhoZQQQ",
@@ -218,139 +220,96 @@
             messagingSenderId: "54675619484",
             appId: "1:54675619484:web:c46f3d05da8dcba7683759"
         };
-    
-        // Initialize Firebase  
+
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
         const storage = getStorage(app);
-        const realtimeDb = getDatabase(app);
-    
-        // Document ready function
-        document.addEventListener('DOMContentLoaded', function () {
-            // Validate form data
-            function validateForm(data) {
-                let formIsValid = true;
-    
-                if (data.accid === "") {
-                    alert("Account ID must be filled");
-                    formIsValid = false;
-                }
-                if (data.email === "") {
-                    alert("Email must be filled");
-                    formIsValid = false;
-                }
-                if (data.phone === "") {
-                    alert("Phone number must be filled");
-                    formIsValid = false;
-                }
-                if (!data.image) {
-                    alert("Image must be uploaded");
-                    formIsValid = false;
-                }
-                if (data.jumlah === "") {
-                    alert("Quantity must be selected");
-                    formIsValid = false;
-                }
-                if (data.platform === "") {
-                    alert("Platform must be selected");
-                    formIsValid = false;
-                }
-    
-                return formIsValid;
+
+        // Reference to the form element
+        const form = document.getElementById("myForm");
+
+        // Function to get price based on selected item
+        function getPrice(jumlah) {
+            const prices = {
+                "5": "Rp 75.000",
+                "11": "Rp 159.000",
+                "17": "Rp 28.000",
+                "25": "Rp 120.000",
+                "33": "Rp 315.000",
+                "154": "Rp 700.000",
+                "256": "Rp 1.050.000",
+                "333": "Rp 1.700.000"
+            };
+            return prices[jumlah];
+        }
+
+        // Event listener to update price display when item is selected
+        document.getElementById("diamonds").addEventListener("change", (e) => {
+            const selectedJumlah = e.target.value;
+            const price = getPrice(selectedJumlah);
+            document.getElementById("price").innerHTML = price ? `<p>Price: ${price}</p>` : "";
+        });
+
+        // Event listener to update phone display when platform is selected
+        document.getElementById("platform").addEventListener("change", (e) => {
+            const selectedPlatform = e.target.value;
+            const phoneElement = document.getElementById("payment-phone");
+            if (selectedPlatform === "dana" || selectedPlatform === "gopay" || selectedPlatform === "Telkomsel" || selectedPlatform === "Indosat") {
+                const phoneNumber = document.getElementById("phone").value;
+                phoneElement.innerHTML = `<p>Phone: ${phoneNumber}</p>`;
+                phoneElement.style.display = "block";
+            } else {
+                phoneElement.style.display = "none";
             }
-    
-            // Handle form submission
-            const form = document.getElementById('myForm');
-            form.addEventListener('submit', async (event) => {
-                event.preventDefault();
-    
-                // Get form data
-                const formData = {
-                    gameid :1,
-                    status: 'Order Process',
-                    accid: form.accid.value,
-                    email: form.email.value,
-                    phone: form.phone.value,
-                    jumlah: form.jumlah.value,
-                    platform: form.platform.value,
-                    image: form.image.files[0]
-                };
-    
-                if (validateForm(formData)) {
-                    try {
-                        // Upload image to Firebase Storage
-                        const storageRef = ref(storage, 'Bukti_Pembayaran/' + formData.image.name);
-                        const snapshot = await uploadBytes(storageRef, formData.image);
-                        const downloadURL = await getDownloadURL(snapshot.ref);
-    
-                        // Add image URL to formData
-                        formData.imageURL = downloadURL;
-    
-                        // Generate a new unique reference for the form data
-                        const newRef = push(dbRef(realtimeDb, 'Payment'));
-    
-                        // Store formData in Realtime Database
-                        await set(newRef, {
-                            gameId: formData.gameid,
-                            accid: formData.accid,
-                            email: formData.email,
-                            phone: formData.phone,
-                            jumlah: formData.jumlah,
-                            platform: formData.platform,
-                            imageURL: formData.imageURL,
-                            status: formData.status
-                        });
-    
-                        console.log('Form data stored in Realtime Database:', formData);
-                        alert('Terima Kasih Sudah Memesan, Silahkan ditunggu Ya!!!.');
-    
-                        // Clear the form
-                        form.reset();
-                    } catch (error) {
-                        console.error('Error storing data in Firestore or Realtime Database:', error);
-                        alert('Failed to store data.');
-                    }
-                }
-            });
-    
-            // Handle platform change
-            const platformSelect = document.getElementById('platform');
-            platformSelect.addEventListener('change', function () {
-                const platform = this.value;
-                const phoneNumbers = {
-                    'Telkomsel': '0811-1234-5678',
-                    'Indosat': '0815-1234-5678',
-                    'dana': '0857-1234-5678',
-                    'gopay': '0812-1234-5678'
-                };
-                const phoneNumber = phoneNumbers[platform];
-                if (phoneNumber) {
-                    document.getElementById('payment-phone').textContent = 'Please transfer to: ' + phoneNumber;
-                    document.getElementById('payment-phone').style.display = "block";
-                } else {
-                    document.getElementById('payment-phone').style.display = "none";
-                }
-            });
-    
-            // Update price display based on selection
-            const diamondsSelect = document.getElementById('diamonds');
-            const priceDisplay = document.getElementById('price');
-            diamondsSelect.addEventListener('change', function () {
-                const prices = {
-                    5: 'Price: Rp 70.671',
-                    11: 'Price: Rp 381.620',
-                    17: 'Price: Rp 14.050',
-                    25: 'Price: Rp 70.250',
-                    33: 'Price: Rp 210.750',
-                    154: 'Price: Rp 421.500',
-                    256: 'Price: Rp 702.500',
-                    333: 'Price: Rp 1.405.000'
-                };
-                priceDisplay.textContent = prices[this.value];
-            });
+        });
+
+        // Form submission event listener
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            // Get form values
+            const accid = document.getElementById("accid").value;
+            const email = document.getElementById("email").value;
+            const phone = document.getElementById("phone").value;
+            const image = document.getElementById("image").files[0];
+            const jumlah = document.getElementById("diamonds").value;
+            const platform = document.getElementById("platform").value;
+
+            // Validate form values
+            if (!accid || !email || !phone || !image || !jumlah || !platform) {
+                alert("Please fill in all fields and upload an image.");
+                return;
+            }
+
+            try {
+                // Upload image to Firebase Storage
+                const imageRef = storageRef(storage, `Bukti_Pembayaran/${image.name}`);
+                const snapshot = await uploadBytes(imageRef, image);
+                const imageUrl = await getDownloadURL(snapshot.ref);
+
+                // Store form data in Firebase Realtime Database
+                const formDataRef = ref(database, "Payment");
+                const newFormDataRef = push(formDataRef);
+                await set(newFormDataRef, {
+                    accid,
+                    email,
+                    phone,
+                    imageUrl,
+                    jumlah,
+                    platform
+                });
+
+                // Clear the form
+                form.reset();
+
+                alert("Form submitted successfully!");
+            } catch (error) {
+                console.error("Error submitting form: ", error);
+                alert("There was an error submitting the form. Please try again.");
+            }
         });
     </script>
-    
-
 </body>
 
 </html>

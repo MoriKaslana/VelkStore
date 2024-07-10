@@ -83,19 +83,23 @@
         const realtimeDb = getDatabase(app);
 
         // Reference to the database
-        const dbRefTopups = dbRef(realtimeDb, 'akPayment');
+        const dbRefTopups = dbRef(realtimeDb, 'Payment');
 
         // Fetch and display data by gameId
         function fetchDataByGameId(gameId) {
             onValue(dbRefTopups, (snapshot) => {
                 const data = snapshot.val();
-                const filteredData = [];
-                for (const id in data) {
-                    if (data[id].gameId === gameId) {
-                        filteredData.push({ id, ...data[id] });
+                if (data) {
+                    const filteredData = [];
+                    for (const id in data) {
+                        if (data[id].gameId === gameId) {
+                            filteredData.push({ id, ...data[id] });
+                        }
                     }
+                    displayData(filteredData);
+                } else {
+                    console.log('No data found');
                 }
-                displayData(filteredData);
             });
         }
 
@@ -133,7 +137,7 @@
         // Open edit modal and populate with data
         function openEditModal(event) {
             const id = event.target.getAttribute('data-id');
-            const dataRef = dbRef(realtimeDb, 'akPayment/' + id);
+            const dataRef = dbRef(realtimeDb, 'Payment/' + id);
             onValue(dataRef, (snapshot) => {
                 const data = snapshot.val();
                 document.getElementById('edit-id').value = id;
@@ -149,7 +153,7 @@
             const data = {
                 status: document.getElementById('edit-status').value
             };
-            update(dbRef(realtimeDb, 'akPayment/' + id), data).then(() => {
+            update(dbRef(realtimeDb, 'Payment/' + id), data).then(() => {
                 $('#editModal').modal('hide');
                 alert('Data updated successfully.');
             }).catch((error) => {
@@ -160,7 +164,7 @@
         // Handle delete
         function deleteData(event) {
             const id = event.target.getAttribute('data-id');
-            remove(dbRef(realtimeDb, 'akPayment/' + id)).then(() => {
+            remove(dbRef(realtimeDb, 'Payment/' + id)).then(() => {
                 alert('Data deleted successfully.');
             }).catch((error) => {
                 console.error('Error deleting data:', error);
@@ -169,12 +173,13 @@
 
         // Fetch and display data for gameId = 1 on page load
         document.addEventListener('DOMContentLoaded', () => {
-            fetchDataByGameId(1);
+            fetchDataByGameId(1);  // Ensure the gameId is a string if stored as such
         });
+
     </script>
 
     <!-- Import Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
